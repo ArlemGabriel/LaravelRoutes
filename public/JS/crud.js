@@ -5,6 +5,22 @@ var mymap
 var markerIcon;
 var markers = [];
 var indexroute =0;
+var config = {
+    apiKey: "AIzaSyAgZD9elZclhel1u5wxdU-hd_oZIL4lmG0",
+    authDomain: "laravelroutes.firebaseapp.com",
+    databaseURL: "https://laravelroutes.firebaseio.com",
+    projectId: "laravelroutes",
+    storageBucket: "laravelroutes.appspot.com",
+    messagingSenderId: "358324923799",
+    appId: "1:358324923799:web:0facf4314d8bdc794c68d2",
+    measurementId: "G-61TQH457C2"
+
+};
+firebase.initializeApp(config);
+var database = firebase.database();
+var lastIndex = 0;
+var points = [];
+var htmlspoints = []
 // Main function that creates the map and calls other functions
 function main(){
     mymap = L.map('mapid').setView([9.948539942335483, -444.04008294120575], 15);
@@ -40,30 +56,14 @@ function main(){
         });
 }
 
-var config = {
-    apiKey: "AIzaSyAgZD9elZclhel1u5wxdU-hd_oZIL4lmG0",
-    authDomain: "laravelroutes.firebaseapp.com",
-    databaseURL: "https://laravelroutes.firebaseio.com",
-    projectId: "laravelroutes",
-    storageBucket: "laravelroutes.appspot.com",
-    messagingSenderId: "358324923799",
-    appId: "1:358324923799:web:0facf4314d8bdc794c68d2",
-    measurementId: "G-61TQH457C2"
-
-};
-firebase.initializeApp(config);
-var database = firebase.database();
-var lastIndex = 0;
-var points = [];
-var htmlspoints = []
 
 // Agregar puntos
 $('#submitPoint').on('click', function () {
     var newpoint = $("#addPoint").serializeArray();
-    var name = newpoint[0].value;
+    var description = newpoint[0].value;
     var htmlserror = [];
     $('#pointmessages').html(htmlserror);
-    if(name === ""){
+    if(description === ""){
         htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops!</strong>Ingrese el nombre del punto</div>');
         $('#pointmessages').html(htmlserror);
     }else{
@@ -72,7 +72,7 @@ $('#submitPoint').on('click', function () {
         newpoint.push(actualLongitude);
         newpoint.push(lastIndex);
         points.push(newpoint);
-        htmlspoints.push('<tr><td>'+name+'</td><th>'+actualLatitude+'</th><th>'+actualLongitude+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + lastIndex + '">Eliminar</button></td></tr>');
+        htmlspoints.push('<tr><td style="word-wrap: break-word;min-width: 160px;max-width: 160px;white-space:normal;">'+description+'</td><th>'+actualLatitude+'</th><th>'+actualLongitude+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + lastIndex + '">Eliminar</button></td></tr>');
         $('#tbody').html(htmlspoints);
         lastIndex = lastIndex+1;
         var myMarker = L.marker([actualLatitude,actualLongitude],{icon:markerIcon}).addTo(mymap)
@@ -114,7 +114,7 @@ $('#submitRoute').on('click', function () {
         }
         markers = [];
         document.getElementById("routeName").value = "";
-        document.getElementById("pointName").value = "";
+        document.getElementById("pointDescription").value = "";
         $('#tbody').html(htmlspoints);
         
     }
@@ -142,7 +142,7 @@ $('.deleteRecord').on('click', function () {
         }
     }
 
-    var stringvalue = '<tr><td>'+name+'</td><th>'+lat+'</th><th>'+lng+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + id + '">Eliminar</button></td></tr>'
+    var stringvalue = '<tr><td style="word-wrap: break-word;min-width: 160px;max-width: 160px;white-space:normal;">'+name+'</td><th>'+lat+'</th><th>'+lng+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + id + '">Eliminar</button></td></tr>'
     
     // Borra los elementos del html que muestran los puntos
     for(var i = htmlspoints.length - 1; i >= 0; i--) {
