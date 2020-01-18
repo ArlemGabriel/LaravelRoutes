@@ -18,11 +18,8 @@ function main(){
 		.addTo(mymap)
 		.on('dragend', function() {
             var coord = String(myMarker.getLatLng()).split(',');
-            console.log()
             var lat = coord[0].split('(');
-			//console.log(lat);
             var lng = coord[1].split(')');
-            //console.log(lng);
             document.getElementById("pointLon").value = ""+lng[0]+""; 
             document.getElementById("pointLat").value = ""+lat[1]+"";
             actualLatitude = lat[1];
@@ -36,6 +33,11 @@ function main(){
         iconAnchor:   [15, 26], 
         popupAnchor:  [-3, -50] 
     });
+    var ref = firebase.database().ref("routes");
+        ref.on("value",function(snapshot) {
+            //console.log("CHILDRENSCOUNT"+snapshot.numChildren());
+            indexroute = snapshot.numChildren();
+        });
 }
 
 var config = {
@@ -62,7 +64,6 @@ $('#submitPoint').on('click', function () {
     var htmlserror = [];
     $('#pointmessages').html(htmlserror);
     if(name === ""){
-        console.log("Campo Vacio");
         htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops!</strong>Ingrese el nombre del punto</div>');
         $('#pointmessages').html(htmlserror);
     }else{
@@ -87,34 +88,35 @@ $('#submitRoute').on('click', function () {
     var htmlserror = [];
     $('#routemessages').html(htmlserror);
     if(name === ""){
-        console.log("Campo Vacio");
-        htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops!</strong>Ingrese el nombre de la ruta</div>');
+        htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops! </strong>Ingrese el nombre de la ruta</div>');
         $('#routemessages').html(htmlserror);
     }else if(points.length==0 || points.length==1){
-        htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops!</strong>Ingrese al menos dos puntos </div>');
+        htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops! </strong>Ingrese al menos dos puntos </div>');
         $('#routemessages').html(htmlserror);
     }else{
-        var ref = firebase.database().ref("routes");
-        ref.once("value")
-        .then(function(snapshot) {
-            console.log(snapshot.numChildren());
-            indexroute = snapshot.numChildren();
-        });
         indexroute = indexroute+1;
         var JSONobjects = [];
         var preparingJSON;
         for(var i = 0; i <= points.length -1; i++){
             preparingJSON = '{"nombre" : "'+points[i][0].value+'" ,"lat" :'+points[i][1]+',"long" : '+points[i][2]+'}';
-            console.log(preparingJSON);
             JSONobject =JSON.parse(preparingJSON);
             JSONobjects.push(JSONobject);
         }
-        
         firebase.database().ref('routes/' + indexroute).set({
             name: name,
             points: JSONobjects,
         });
-        console.log("registrar ruta");
+        
+        points = [];
+        htmlspoints = [];
+        for(var i=0; i<=markers.length-1;i++){
+            mymap.removeLayer(markers[i][0]);
+        }
+        markers = [];
+        document.getElementById("routeName").value = "";
+        document.getElementById("pointName").value = "";
+        $('#tbody').html(htmlspoints);
+        
     }
 });
 $("body").on('click', '.removeData', function () {
@@ -149,13 +151,7 @@ $('.deleteRecord').on('click', function () {
         }
     }
     for(var i = markers.length - 1; i >= 0; i--) {
-        console.log(markers[i])
-        console.log("LATMARKER"+markers[i][1])
-        console.log("LAT"+lat)
-        console.log("LNGMARKER"+markers[i][2])
-        console.log("LNG"+lng)
         if(markers[i][1] ==lat && markers[i][2] == lng) {
-            console.log("COINCIDE EL MARCADOR")
             mymap.removeLayer(markers[i][0]);
         }
     }

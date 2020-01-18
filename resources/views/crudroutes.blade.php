@@ -27,7 +27,7 @@
                             <form id="route" class="form-inline" method="POST" action="">
                                 <div class="form-group mb-2">
                                     <label for="routeName" class="sr-only">Nombre de la Ruta</label>
-                                    <input id="routeName" type="text" class="form-control" name="routeName" placeholder="Nombre de la Ruta" required autofocus >
+                                    <input id="routeName" type="text" class="form-control" name="routeName" placeholder="Nombre de la Ruta"  >
                                 </div>
                                 <button id="submitRoute" type="button" class="btn btn-primary mb-2 mb-3 ml-2">Guardar Ruta</button>
                                 <div id="routemessages">
@@ -44,17 +44,17 @@
                                 <div class="form-group mb-2 mb-3 ml-2">
                                     <label for="pointName" class="sr-only">Nombre</label>
                                     <input id="pointName" type="text" class="form-control" name="pointName" placeholder="Nombre"
-                                        required autofocus>
+                                        >
                                 </div>
                                 <div class="form-group mb-2 mb-3 ml-2">
                                     <label for="pointLat" class="sr-only">Latitud</label>
                                     <input id="pointLat" type="text" class="form-control" name="pointLat" placeholder="Latitud"
-                                        required autofocus disabled>
+                                         disabled>
                                 </div>
                                 <div class="form-group mb-2 mb-3 ml-2">
                                     <label for="pointLon" class="sr-only">Longitud</label>
                                     <input id="pointLon" type="text" class="form-control" name="pointLon" placeholder="Longitud"
-                                        required autofocus disabled>
+                                         disabled>
                                 </div>
                                 <button id="submitPoint" type="button" class="btn btn-primary mb-2 mb-3 ml-2">Agregar Punto</button>
                                 <div id="pointmessages">
