@@ -1,3 +1,6 @@
+var retrievedpoints = [];
+var retrievedname;
+var flag;
 var config = {
     apiKey: "AIzaSyAgZD9elZclhel1u5wxdU-hd_oZIL4lmG0",
     authDomain: "laravelroutes.firebaseapp.com",
@@ -30,16 +33,26 @@ $('#submitSearch').on('click', function () {
         htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops! </strong>Ingrese un identificador</div>');
         $('#routessearchmessages').html(htmlserror);
     }else{
-        firebase.database().ref('routes/').child(searchid).on('value', function (snapshot){
+        
+        firebase.database().ref('routes/').child(searchid).once('value', function (snapshot){
             if(snapshot.exists()){
-                console.log("EXISTE"+snapshot.val());
-                var htmls = [];
                 var value = snapshot.val();
-                console.log(value.name)
+                retrievedname = value.name;
+                retrievedpoints = value.points;
+                flag = true;
             }else{
-                console.log("NO EXISTE")
+                flag = false;
+            }
+        }).then(function(){
+            if(flag ==true){
+                putDataOnHtml();
+            }else{
+                htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops! </strong>No existe la ruta ingresada</div>');
+                $('#routessearchmessages').html(htmlserror);
             }
         });
+        
+
     }
 
     /*var values = $("#addCustomer").serializeArray();
@@ -64,4 +77,19 @@ function validateEmptySearch(searchid){
     }else{
         return false;
     }
+}
+function putDataOnHtml(){
+    console.log(retrievedpoints);
+    var htmls = [];
+
+    for(var i=0;i<=retrievedpoints.length-1;i++){
+        htmls.push('<tr>\
+                <td>' + retrievedname + '</td>\
+                <td>' + retrievedpoints[i].description+ '</td>\
+                <td>' + retrievedpoints[i].lat+ '</td>\
+                <td>' + retrievedpoints[i].long+ '</td>\
+            </tr>');
+    }
+    $('#tbody2').html(htmls);
+        
 }
