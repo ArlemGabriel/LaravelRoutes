@@ -88,13 +88,7 @@
                 <a class="nav-link" href="crudroutes">Crear Ruta</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Editar Ruta</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="#">Buscar Rutas</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Eliminar Rutas</a>
             </li>
             </ul>
         </div>
@@ -111,9 +105,7 @@
                 </div>
                 <div class="links">
                     <a href="crudroutes">Crear Ruta</a>
-                    <a href="https://laracasts.com">Editar Ruta</a>
-                    <a href="https://laravel-news.com">Buscar Rutas</a>
-                    <a href="https://blog.laravel.com">Eliminar Ruta</a>
+                    <a href="#">Buscar Rutas</a>
                 </div>
             </div>
         </div>

@@ -21,35 +21,6 @@
 
 </head>
 <body onload="main()">
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgb(129, 129, 129)">
-        <div class="container">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/">Inicio
-                <span class="sr-only">(current)</span>
-                </a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="crudroutes">Crear Ruta</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Editar Ruta</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Buscar Rutas</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Eliminar Rutas</a>
-            </li>
-            </ul>
-        </div>
-        </div>
-    </nav>    
-
     <div class="container">
         <div class="row">
             <div class="col">
@@ -148,7 +119,7 @@
                     <div id="remove-modal" data-backdrop="static" data-keyboard="false" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel"
                         aria-hidden="true" style="display: none;">
                         <div class="modal-dialog modal-dialog-centered" style="width:55%;">
-                            <div class="modal-content">
+                            <div class="modal-content" >
                                 <div class="modal-header">
                                     <h4 class="modal-title" id="custom-width-modalLabel">Delete</h4>
                                     <button type="button" class="close remove-data-from-delete-form" data-dismiss="modal"

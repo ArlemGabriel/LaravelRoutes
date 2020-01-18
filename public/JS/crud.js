@@ -157,8 +157,11 @@ $('.deleteRecord').on('click', function () {
     }
     $('#tbody').html(htmlspoints);
     $('body').find('.users-remove-record-model').find("input").remove();
-    $("#remove-modal").modal('hide');
+    $('#remove-modal').modal('hide');
+    $('body').removeClass('modal-open');
+    $('.modal-backdrop').remove();
 });
+
 $('.remove-data-from-delete-form').click(function () {
     $('body').find('.users-remove-record-model').find("input").remove();
 });
