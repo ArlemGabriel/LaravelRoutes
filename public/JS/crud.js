@@ -3,7 +3,8 @@ var actualLatitude
 var actualLongitude
 var mymap
 var markerIcon;
-var markers = []
+var markers = [];
+var indexroute =0;
 // Main function that creates the map and calls other functions
 function main(){
     mymap = L.map('mapid').setView([9.948539942335483, -444.04008294120575], 15);
@@ -93,6 +94,26 @@ $('#submitRoute').on('click', function () {
         htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops!</strong>Ingrese al menos dos puntos </div>');
         $('#routemessages').html(htmlserror);
     }else{
+        var ref = firebase.database().ref("routes");
+        ref.once("value")
+        .then(function(snapshot) {
+            console.log(snapshot.numChildren());
+            indexroute = snapshot.numChildren();
+        });
+        indexroute = indexroute+1;
+        var JSONobjects = [];
+        var preparingJSON;
+        for(var i = 0; i <= points.length -1; i++){
+            preparingJSON = '{"nombre" : "'+points[i][0].value+'" ,"lat" :'+points[i][1]+',"long" : '+points[i][2]+'}';
+            console.log(preparingJSON);
+            JSONobject =JSON.parse(preparingJSON);
+            JSONobjects.push(JSONobject);
+        }
+        
+        firebase.database().ref('routes/' + indexroute).set({
+            name: name,
+            points: JSONobjects,
+        });
         console.log("registrar ruta");
     }
 });
