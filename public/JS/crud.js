@@ -61,116 +61,21 @@ $('#submitPoint').on('click', function () {
     var longitude = actualLongitude; //newpoint[2].value;
     var htmlserror = [];
     $('#pointmessages').html(htmlserror);
-    if(name === "" || latitude ===""|| longitude === ""){
+    if(name === ""){
         console.log("Campo Vacio");
-        htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops!</strong>Todos los campos del punto son obligatorios</div>');
+        htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops!</strong>Ingrese el nombre del punto</div>');
         $('#pointmessages').html(htmlserror);
     }else{
+        newpoint.push(latitude);
+        newpoint.push(longitude);
+        newpoint.push(lastIndex);
         points.push(newpoint);
-        htmlspoints.push('<tr>\
-                            <td>'+name+'</td>\
-                            <th>'+latitude+'</th>\
-                            <th>'+longitude+'</th>\
-                            <td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + lastIndex + '">Delete</button></td>\
-                            </tr>');
+        htmlspoints.push('<tr><td>'+name+'</td><th>'+latitude+'</th><th>'+longitude+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + lastIndex + '">Eliminar</button></td></tr>');
         $('#tbody').html(htmlspoints);
         lastIndex = lastIndex+1;
         L.marker([actualLatitude, actualLongitude],{icon:markerIcon}).addTo(mymap)
     }
-
-    /*var values = $("#addCustomer").serializeArray();
-    var name = values[0].value;
-    var email = values[1].value;
-    var userID = lastIndex + 1;
-
-    console.log(values);
-
-    firebase.database().ref('customers/' + userID).set({
-        name: name,
-        email: email,
-    });
-
-    // Reassign lastID value
-    lastIndex = userID;
-    $("#addCustomer input").val("");*/
 });
-/*
-firebase.database().ref('customers/').on('value', function (snapshot) {
-    var value = snapshot.val();
-    var htmls = [];
-    $.each(value, function (index, value) {
-        if (value) {
-            htmls.push('<tr>\
-            <td>' + value.name + '</td>\
-            <td>' + value.email + '</td>\
-            <td><button data-toggle="modal" data-target="#update-modal" class="btn btn-info updateData" data-id="' + index + '">Update</button>\
-            <button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + index + '">Delete</button></td>\
-        </tr>');
-        }
-        lastIndex = index;
-    });
-    $('#tbody').html(htmls);
-    $("#submitUser").removeClass('desabled');
-});*/
-
-// Add Data
-$('#submitCustomer').on('click', function () {
-    var values = $("#addCustomer").serializeArray();
-    var name = values[0].value;
-    var email = values[1].value;
-    var userID = lastIndex + 1;
-
-    console.log(values);
-
-    firebase.database().ref('customers/' + userID).set({
-        name: name,
-        email: email,
-    });
-
-    // Reassign lastID value
-    lastIndex = userID;
-    $("#addCustomer input").val("");
-});
-
-// Update Data
-var updateID = 0;
-$('body').on('click', '.updateData', function () {
-    updateID = $(this).attr('data-id');
-    firebase.database().ref('customers/' + updateID).on('value', function (snapshot) {
-        var values = snapshot.val();
-        var updateData = '<div class="form-group">\
-            <label for="first_name" class="col-md-12 col-form-label">Name</label>\
-            <div class="col-md-12">\
-                <input id="first_name" type="text" class="form-control" name="name" value="' + values.name + '" required autofocus>\
-            </div>\
-        </div>\
-        <div class="form-group">\
-            <label for="last_name" class="col-md-12 col-form-label">Email</label>\
-            <div class="col-md-12">\
-                <input id="last_name" type="text" class="form-control" name="email" value="' + values.email + '" required autofocus>\
-            </div>\
-        </div>';
-
-        $('#updateBody').html(updateData);
-    });
-});
-
-$('.updateCustomer').on('click', function () {
-    var values = $(".users-update-record-model").serializeArray();
-    var postData = {
-        name: values[0].value,
-        email: values[1].value,
-    };
-
-    var updates = {};
-    updates['/customers/' + updateID] = postData;
-
-    firebase.database().ref().update(updates);
-
-    $("#update-modal").modal('hide');
-});
-
-// Remove Data
 $("body").on('click', '.removeData', function () {
     var id = $(this).attr('data-id');
     $('body').find('.users-remove-record-model').append('<input name="id" type="hidden" value="' + id + '">');
@@ -179,7 +84,24 @@ $("body").on('click', '.removeData', function () {
 $('.deleteRecord').on('click', function () {
     var values = $(".users-remove-record-model").serializeArray();
     var id = values[0].value;
-    firebase.database().ref('customers/' + id).remove();
+
+    var point = points[id];
+    var name = point[0].value;
+    var lat = point[1];
+    var lng = point[2];
+    var stringvalue = '<tr><td>'+name+'</td><th>'+lat+'</th><th>'+lng+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + id + '">Eliminar</button></td></tr>'
+
+    for(var i = htmlspoints.length - 1; i >= 0; i--) {
+        if(htmlspoints[i] === stringvalue) {
+            htmlspoints.splice(i, 1);
+        }
+    }
+    for(var i = points.length - 1; i >= 0; i--) {
+        if(points[i][3] === id) {
+            points.splice(id,1);
+        }
+    }
+    $('#tbody').html(htmlspoints);
     $('body').find('.users-remove-record-model').find("input").remove();
     $("#remove-modal").modal('hide');
 });

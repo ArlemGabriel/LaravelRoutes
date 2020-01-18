@@ -105,7 +105,7 @@
                 </form>
 
                 <!-- Delete Model -->
-                <form action="" method="POST" class="users-remove-record-model">
+                <form action="" method="POST" class="users-remove-record-model" >
                     <div id="remove-modal" data-backdrop="static" data-keyboard="false" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel"
                         aria-hidden="true" style="display: none;">
                         <div class="modal-dialog modal-dialog-centered" style="width:55%;">
@@ -123,7 +123,7 @@
                                     <button type="button" class="btn btn-default waves-effect remove-data-from-delete-form"
                                             data-dismiss="modal">Close
                                     </button>
-                                    <button type="button" class="btn btn-danger waves-effect waves-light deleteRecord">Delete
+                                        <button type="button" class="btn btn-danger waves-effect waves-light deleteRecord">Delete
                                     </button>
                                 </div>
                             </div>
@@ -227,17 +227,18 @@
 
         $("#update-modal").modal('hide');
     });
-
+*/
     // Remove Data
-    $("body").on('click', '.removeData', function () {
+    /*$("body").on('click', '.removeData', function () {
         var id = $(this).attr('data-id');
+        console.log(id);
         $('body').find('.users-remove-record-model').append('<input name="id" type="hidden" value="' + id + '">');
     });
 
     $('.deleteRecord').on('click', function () {
         var values = $(".users-remove-record-model").serializeArray();
         var id = values[0].value;
-        firebase.database().ref('customers/' + id).remove();
+        ///firebase.database().ref('customers/' + id).remove();
         $('body').find('.users-remove-record-model').find("input").remove();
         $("#remove-modal").modal('hide');
     });
