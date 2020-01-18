@@ -17,7 +17,7 @@
         <link href="CSS/styles.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Dosis:400,500,600,700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lobster&display=swap" rel="stylesheet"> 
-    <title>Crear Ruta</title>
+    <title>CRUD Rutas</title>
 
 </head>
 <body onload="main()">
@@ -34,10 +34,16 @@
                 </a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="#">Crear Ruta</a>
+                <a class="nav-link" href="crudroutes">Crear Ruta</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="searchroutes">Buscar Rutas</a>
+                <a class="nav-link" href="#">Editar Ruta</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Buscar Rutas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Eliminar Rutas</a>
             </li>
             </ul>
         </div>
@@ -181,7 +187,7 @@
 {{--Firebase Tasks--}}
 <script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.7.0/firebase.js"></script>
-<script src="/JS/crud.js"></script>
+<script src="/JS/createroute.js"></script>
 <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
 

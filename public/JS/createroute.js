@@ -22,7 +22,7 @@ var lastIndex = 0;
 var points = [];
 var htmlspoints = []
 var actualchildrens = []
-// Main function that creates the map and calls other functions
+// Main function that creates the map
 function main(){
     mymap = L.map('mapid').setView([9.948539942335483, -444.04008294120575], 15);
     actualLatitude = 9.94607;
@@ -50,15 +50,10 @@ function main(){
         iconAnchor:   [15, 26], 
         popupAnchor:  [-3, -50] 
     });
-    /*var ref = firebase.database().ref("routes");
-        ref.on("value",function(snapshot) {
-            //console.log("CHILDRENSCOUNT"+snapshot.numChildren());
-            indexroute = snapshot.numChildren();
-    });*/
 }
 
 
-// Agregar puntos
+// On submitPoint click , add a new point
 $('#submitPoint').on('click', function () {
     var newpoint = $("#addPoint").serializeArray();
     var description = newpoint[0].value;
@@ -83,6 +78,7 @@ $('#submitPoint').on('click', function () {
         markers.push(marker);
     }
 });
+// On submitRoute click , add a new route on firebase
 $('#submitRoute').on('click', function () {
     var newroute = $("#route").serializeArray();
     var id = newroute[0].value;
@@ -127,19 +123,20 @@ $('#submitRoute').on('click', function () {
         
     }
 });
+// On body removeData click, append id into html
 $("body").on('click', '.removeData', function () {
     var id = $(this).attr('data-id');
     $('body').find('.users-remove-record-model').append('<input name="id" type="hidden" value="' + id + '">');
 });
 
-// Borrar puntos
+// On deleteRecord click , delete point clicked
 $('.deleteRecord').on('click', function () {
     var values = $(".users-remove-record-model").serializeArray();
     var id = values[0].value;
     var name;
     var lat;
     var lng;
-    // Borra los puntos
+    // Delete points
     for(var i = points.length - 1; i >= 0; i--) {
         if(points[i][3] == id) {
             name = points[i][0].value;
@@ -152,7 +149,7 @@ $('.deleteRecord').on('click', function () {
 
     var stringvalue = '<tr><td style="word-wrap: break-word;min-width: 250px;max-width: 250px;white-space:normal;">'+name+'</td><th>'+lat+'</th><th>'+lng+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + id + '">Eliminar</button></td></tr>'
     
-    // Borra los elementos del html que muestran los puntos
+    // Delete the htmls elements
     for(var i = htmlspoints.length - 1; i >= 0; i--) {
         if(htmlspoints[i] === stringvalue) {
             htmlspoints.splice(i, 1);
@@ -170,6 +167,7 @@ $('.deleteRecord').on('click', function () {
     $('.modal-backdrop').remove();
 });
 
+// Remove the input with the id added to the html
 $('.remove-data-from-delete-form').click(function () {
     $('body').find('.users-remove-record-model').find("input").remove();
 });
