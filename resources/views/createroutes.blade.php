@@ -17,7 +17,7 @@
         <link href="CSS/styles.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Dosis:400,500,600,700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Lobster&display=swap" rel="stylesheet"> 
-    <title>CRUD Rutas</title>
+    <title>Crear Ruta</title>
 
 </head>
 <body onload="main()">
@@ -34,10 +34,10 @@
                 </a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link" href="crudroutes">Crear Ruta</a>
+                <a class="nav-link" href="#">Crear Ruta</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Buscar Rutas</a>
+                <a class="nav-link" href="searchroutes">Buscar Rutas</a>
             </li>
             </ul>
         </div>

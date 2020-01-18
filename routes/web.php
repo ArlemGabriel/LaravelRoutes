@@ -15,4 +15,5 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::view('crudroutes','crudroutes');
+Route::view('createroutes','createroutes');
+Route::view('searchroutes','searchroutes');

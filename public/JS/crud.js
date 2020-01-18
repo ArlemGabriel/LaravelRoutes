@@ -104,11 +104,6 @@ $('#submitRoute').on('click', function () {
             JSONobject =JSON.parse(preparingJSON);
             JSONobjects.push(JSONobject);
         }
-        
-        /*firebase.database().ref('routes/' + indexroute).set({
-            name: name,
-            points: JSONobjects,
-        });*/
         firebase.database().ref('routes/').child(id).once('value', function(snapshot) {
             if (snapshot.exists()) {
                 htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops! </strong>Ya existe una ruta con ese identificador </div>');

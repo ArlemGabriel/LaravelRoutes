@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Inicio</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
@@ -85,10 +85,10 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="crudroutes">Crear Ruta</a>
+                <a class="nav-link" href="createroutes">Crear Ruta</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Buscar Rutas</a>
+                <a class="nav-link" href="searchroutes">Buscar Rutas</a>
             </li>
             </ul>
         </div>
@@ -104,8 +104,8 @@
                     <img src="./RES/map.jpg" class="img-fluid" alt="" height="500px" width="800px">
                 </div>
                 <div class="links">
-                    <a href="crudroutes">Crear Ruta</a>
-                    <a href="#">Buscar Rutas</a>
+                    <a href="createroutes">Crear Ruta</a>
+                    <a href="searchroutes">Buscar Rutas</a>
                 </div>
             </div>
         </div>
