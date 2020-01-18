@@ -3,9 +3,9 @@ var actualLatitude
 var actualLongitude
 var mymap
 var markerIcon;
+var markers = []
 // Main function that creates the map and calls other functions
 function main(){
-    console.log("ENTRE");
     mymap = L.map('mapid').setView([9.948539942335483, -444.04008294120575], 15);
     actualLatitude = 9.94607;
     actualLongitude = -444.0391;
@@ -13,15 +13,15 @@ function main(){
     const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
     const maxzoom = 35;
     L.tileLayer(url,{attribution,maxzoom}).addTo(mymap);
-    myMarker = L.marker([9.948539942335483, -444.04008294120575], {title: "MyPoint", alt: "The Big I", draggable: true})
+    myMarker = L.marker([9.94607, -444.0391], {title: "MyPoint", alt: "The Big I", draggable: true})
 		.addTo(mymap)
 		.on('dragend', function() {
-			var coord = String(myMarker.getLatLng()).split(',');
-			console.log(coord);
-			var lat = coord[0].split('(');
-			console.log(lat);
-			var lng = coord[1].split(')');
-            console.log(lng);
+            var coord = String(myMarker.getLatLng()).split(',');
+            console.log()
+            var lat = coord[0].split('(');
+			//console.log(lat);
+            var lng = coord[1].split(')');
+            //console.log(lng);
             document.getElementById("pointLon").value = ""+lng[0]+""; 
             document.getElementById("pointLat").value = ""+lat[1]+"";
             actualLatitude = lat[1];
@@ -58,8 +58,6 @@ var htmlspoints = []
 $('#submitPoint').on('click', function () {
     var newpoint = $("#addPoint").serializeArray();
     var name = newpoint[0].value;
-    var latitude = actualLatitude;
-    var longitude = actualLongitude;
     var htmlserror = [];
     $('#pointmessages').html(htmlserror);
     if(name === ""){
@@ -67,14 +65,19 @@ $('#submitPoint').on('click', function () {
         htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops!</strong>Ingrese el nombre del punto</div>');
         $('#pointmessages').html(htmlserror);
     }else{
-        newpoint.push(latitude);
-        newpoint.push(longitude);
+        var marker = []
+        newpoint.push(actualLatitude);
+        newpoint.push(actualLongitude);
         newpoint.push(lastIndex);
         points.push(newpoint);
-        htmlspoints.push('<tr><td>'+name+'</td><th>'+latitude+'</th><th>'+longitude+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + lastIndex + '">Eliminar</button></td></tr>');
+        htmlspoints.push('<tr><td>'+name+'</td><th>'+actualLatitude+'</th><th>'+actualLongitude+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + lastIndex + '">Eliminar</button></td></tr>');
         $('#tbody').html(htmlspoints);
         lastIndex = lastIndex+1;
-        L.marker([actualLatitude, actualLongitude],{icon:markerIcon}).addTo(mymap)
+        var myMarker = L.marker([actualLatitude,actualLongitude],{icon:markerIcon}).addTo(mymap)
+        marker.push(myMarker);
+        marker.push(actualLatitude);
+        marker.push(actualLongitude);
+        markers.push(marker);
     }
 });
 $('#submitRoute').on('click', function () {
@@ -89,17 +92,7 @@ $('#submitRoute').on('click', function () {
     }else if(points.length==0 || points.length==1){
         htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops!</strong>Ingrese al menos dos puntos </div>');
         $('#routemessages').html(htmlserror);
-        /*
-        newpoint.push(latitude);
-        newpoint.push(longitude);
-        newpoint.push(lastIndex);
-        points.push(newpoint);
-        htmlspoints.push('<tr><td>'+name+'</td><th>'+latitude+'</th><th>'+longitude+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + lastIndex + '">Eliminar</button></td></tr>');
-        $('#tbody').html(htmlspoints);
-        lastIndex = lastIndex+1;
-        L.marker([actualLatitude, actualLongitude],{icon:markerIcon}).addTo(mymap)*/
     }else{
-        //console.log(points.length)
         console.log("registrar ruta");
     }
 });
@@ -115,25 +108,34 @@ $('.deleteRecord').on('click', function () {
     var name;
     var lat;
     var lng;
+    // Borra los puntos
     for(var i = points.length - 1; i >= 0; i--) {
-        
         if(points[i][3] == id) {
             name = points[i][0].value;
             lat = points[i][1];
             lng = points[i][2];
-            console.log("POINTS"+points[i][3])
-            console.log("ID",id)
             points.splice(i,1);
-            console.log("POINTSSIZE:"+points.length)
             break;
         }
     }
 
     var stringvalue = '<tr><td>'+name+'</td><th>'+lat+'</th><th>'+lng+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + id + '">Eliminar</button></td></tr>'
-
+    
+    // Borra los elementos del html que muestran los puntos
     for(var i = htmlspoints.length - 1; i >= 0; i--) {
         if(htmlspoints[i] === stringvalue) {
             htmlspoints.splice(i, 1);
+        }
+    }
+    for(var i = markers.length - 1; i >= 0; i--) {
+        console.log(markers[i])
+        console.log("LATMARKER"+markers[i][1])
+        console.log("LAT"+lat)
+        console.log("LNGMARKER"+markers[i][2])
+        console.log("LNG"+lng)
+        if(markers[i][1] ==lat && markers[i][2] == lng) {
+            console.log("COINCIDE EL MARCADOR")
+            mymap.removeLayer(markers[i][0]);
         }
     }
     $('#tbody').html(htmlspoints);
