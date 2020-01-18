@@ -56,7 +56,7 @@ $('#submitSearch').on('click', function () {
             if(flag ==true){
                 putDataOnHtml();
                 drawRouteOnMap();
-
+                createWayPoints();
             }else{
                 htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops! </strong>No existe la ruta ingresada</div>');
                 $('#routessearchmessages').html(htmlserror);
@@ -106,4 +106,25 @@ function drawRouteOnMap(){
         }
     }
     
+}
+
+function createWayPoints(){
+    console.log("ENTRE WAYPOINTS")
+    let waypoints = [];
+    for(var i=0;i<=retrievedpoints.length-1;i++){
+        var wpnt = L.latLng(retrievedpoints[i].lat,retrievedpoints[i].long);
+        waypoints.push(wpnt);
+    }
+    console.log(waypoints)
+    L.Routing.control({createMarker: function() { return null; }, waypoints:waypoints}).addTo(mymap);
+    /*
+    let code = "";
+    let head = "L.Routing.control({createMarker: function() { return null; }, waypoints: ["
+    let body = "L.latLng("+waypointsa[0]+")"
+    let tail = "]}).addTo(mymap);"
+    for(var j = 1; j < waypointsa.length; j+=1){
+        body = body+ ",L.latLng("+waypointsa[j]+")"
+    }
+    code = head+body+tail
+    eval(code)*/
 }
