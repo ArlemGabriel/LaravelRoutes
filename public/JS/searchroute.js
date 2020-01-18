@@ -9,7 +9,9 @@ var config = {
     measurementId: "G-61TQH457C2"
 
 };
+
 firebase.initializeApp(config);
+
 function main(){
     mymap = L.map('mapid2').setView([9.948539942335483, -444.04008294120575], 15);
     const url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -28,7 +30,16 @@ $('#submitSearch').on('click', function () {
         htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops! </strong>Ingrese un identificador</div>');
         $('#routessearchmessages').html(htmlserror);
     }else{
-        console.log("LLENO")
+        firebase.database().ref('routes/').child(searchid).on('value', function (snapshot){
+            if(snapshot.exists()){
+                console.log("EXISTE"+snapshot.val());
+                var htmls = [];
+                var value = snapshot.val();
+                console.log(value.name)
+            }else{
+                console.log("NO EXISTE")
+            }
+        });
     }
 
     /*var values = $("#addCustomer").serializeArray();

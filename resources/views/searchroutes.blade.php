@@ -68,7 +68,8 @@
         <h5>Información de Ruta</h5>
             <table class="table table-responsive">
                 <tr>
-                    <th width="100%" >Descripción</th>
+                    <th width="50%">Nombre de la Ruta</th>
+                    <th width="50%" >Descripción</th>
                     <th >Latitud</th>
                     <th >Longitud</th>
                     <th class="text-center">Acción</th>
