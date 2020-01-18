@@ -54,11 +54,12 @@ var lastIndex = 0;
 var points = [];
 var htmlspoints = []
 
+// Agregar puntos
 $('#submitPoint').on('click', function () {
     var newpoint = $("#addPoint").serializeArray();
     var name = newpoint[0].value;
-    var latitude = actualLatitude;//newpoint[1].value;
-    var longitude = actualLongitude; //newpoint[2].value;
+    var latitude = actualLatitude;
+    var longitude = actualLongitude;
     var htmlserror = [];
     $('#pointmessages').html(htmlserror);
     if(name === ""){
@@ -76,29 +77,63 @@ $('#submitPoint').on('click', function () {
         L.marker([actualLatitude, actualLongitude],{icon:markerIcon}).addTo(mymap)
     }
 });
+$('#submitRoute').on('click', function () {
+    var newroute = $("#route").serializeArray();
+    var name = newroute[0].value;
+    var htmlserror = [];
+    $('#routemessages').html(htmlserror);
+    if(name === ""){
+        console.log("Campo Vacio");
+        htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops!</strong>Ingrese el nombre de la ruta</div>');
+        $('#routemessages').html(htmlserror);
+    }else if(points.length==0 || points.length==1){
+        htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops!</strong>Ingrese al menos dos puntos </div>');
+        $('#routemessages').html(htmlserror);
+        /*
+        newpoint.push(latitude);
+        newpoint.push(longitude);
+        newpoint.push(lastIndex);
+        points.push(newpoint);
+        htmlspoints.push('<tr><td>'+name+'</td><th>'+latitude+'</th><th>'+longitude+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + lastIndex + '">Eliminar</button></td></tr>');
+        $('#tbody').html(htmlspoints);
+        lastIndex = lastIndex+1;
+        L.marker([actualLatitude, actualLongitude],{icon:markerIcon}).addTo(mymap)*/
+    }else{
+        //console.log(points.length)
+        console.log("registrar ruta");
+    }
+});
 $("body").on('click', '.removeData', function () {
     var id = $(this).attr('data-id');
     $('body').find('.users-remove-record-model').append('<input name="id" type="hidden" value="' + id + '">');
 });
 
+// Borrar puntos
 $('.deleteRecord').on('click', function () {
     var values = $(".users-remove-record-model").serializeArray();
     var id = values[0].value;
+    var name;
+    var lat;
+    var lng;
+    for(var i = points.length - 1; i >= 0; i--) {
+        
+        if(points[i][3] == id) {
+            name = points[i][0].value;
+            lat = points[i][1];
+            lng = points[i][2];
+            console.log("POINTS"+points[i][3])
+            console.log("ID",id)
+            points.splice(i,1);
+            console.log("POINTSSIZE:"+points.length)
+            break;
+        }
+    }
 
-    var point = points[id];
-    var name = point[0].value;
-    var lat = point[1];
-    var lng = point[2];
     var stringvalue = '<tr><td>'+name+'</td><th>'+lat+'</th><th>'+lng+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + id + '">Eliminar</button></td></tr>'
 
     for(var i = htmlspoints.length - 1; i >= 0; i--) {
         if(htmlspoints[i] === stringvalue) {
             htmlspoints.splice(i, 1);
-        }
-    }
-    for(var i = points.length - 1; i >= 0; i--) {
-        if(points[i][3] === id) {
-            points.splice(id,1);
         }
     }
     $('#tbody').html(htmlspoints);

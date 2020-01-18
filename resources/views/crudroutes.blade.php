@@ -29,6 +29,9 @@
                                     <label for="routeName" class="sr-only">Nombre de la Ruta</label>
                                     <input id="routeName" type="text" class="form-control" name="routeName" placeholder="Nombre de la Ruta" required autofocus >
                                 </div>
+                                <button id="submitRoute" type="button" class="btn btn-primary mb-2 mb-3 ml-2">Guardar Ruta</button>
+                                <div id="routemessages">
+                                </div>
                             </form>
                         </div>
                     </div>
