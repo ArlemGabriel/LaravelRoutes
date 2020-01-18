@@ -15,6 +15,9 @@ var config = {
 
 };
 var markerIcon;
+var markerStart;
+var markerEnd;
+var routingControl = null;
 
 firebase.initializeApp(config);
 
@@ -26,6 +29,18 @@ function main(){
     L.tileLayer(url,{attribution,maxzoom}).addTo(mymap);
     markerIcon = L.icon({
         iconUrl: './RES/marker.png',
+        iconSize:     [30, 30], 
+        iconAnchor:   [15, 26], 
+        popupAnchor:  [-3, -50] 
+    });
+    markerStart = L.icon({
+        iconUrl: './RES/start.png',
+        iconSize:     [30, 30], 
+        iconAnchor:   [15, 26], 
+        popupAnchor:  [-3, -50] 
+    });
+    markerEnd = L.icon({
+        iconUrl: './RES/finish.png',
         iconSize:     [30, 30], 
         iconAnchor:   [15, 26], 
         popupAnchor:  [-3, -50] 
@@ -92,8 +107,19 @@ function drawRouteOnMap(){
     if(markers.length == 0){
         console.log("ENTRE");
         for(var i=0;i<=retrievedpoints.length-1;i++){
-            var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerIcon}).addTo(mymap)
-            markers.push(myMarker);
+            if(i!=0 && i!=retrievedpoints.length-1){
+                console.log("ENTRE MARKER NORMAL")
+                var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerIcon}).addTo(mymap)
+                markers.push(myMarker);
+            }else if(i==0){
+                console.log("ENTRE MARKER START")
+                var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerStart}).addTo(mymap)
+                markers.push(myMarker);
+            }else{
+                console.log("ENTRE MARKER END")
+                var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerEnd}).addTo(mymap)
+                markers.push(myMarker);
+            }
         }
         //console.log(markers)
     }else{
@@ -102,21 +128,43 @@ function drawRouteOnMap(){
         }
         markers = [];
         for(var i=0;i<=retrievedpoints.length-1;i++){
-            markers.push(L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerIcon}).addTo(mymap));
+            if(i!=0 && i!=retrievedpoints.length-1){
+                console.log("ENTRE MARKER NORMAL")
+                var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerIcon}).addTo(mymap)
+                markers.push(myMarker);
+            }else if(i==0){
+                console.log("ENTRE MARKER START")
+                var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerStart}).addTo(mymap)
+                markers.push(myMarker);
+            }else{
+                console.log("ENTRE MARKER END")
+                var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerEnd}).addTo(mymap)
+                markers.push(myMarker);
+            }
         }
     }
-    
 }
-
 function createWayPoints(){
     console.log("ENTRE WAYPOINTS")
-    let waypoints = [];
-    for(var i=0;i<=retrievedpoints.length-1;i++){
-        var wpnt = L.latLng(retrievedpoints[i].lat,retrievedpoints[i].long);
-        waypoints.push(wpnt);
+    if(routingControl==null){
+        let waypoints = [];
+        for(var i=0;i<=retrievedpoints.length-1;i++){
+            var wpnt = L.latLng(retrievedpoints[i].lat,retrievedpoints[i].long);
+            waypoints.push(wpnt);
+        }
+        console.log(waypoints)
+        routingControl = L.Routing.control({createMarker: function() { return null; }, waypoints:waypoints}).addTo(mymap);
+    }else{
+        mymap.removeControl(routingControl);
+        routingControl=null;
+        let waypoints = [];
+        for(var i=0;i<=retrievedpoints.length-1;i++){
+            var wpnt = L.latLng(retrievedpoints[i].lat,retrievedpoints[i].long);
+            waypoints.push(wpnt);
+        }
+        console.log(waypoints)
+        routingControl = L.Routing.control({createMarker: function() { return null; }, waypoints:waypoints}).addTo(mymap);
     }
-    console.log(waypoints)
-    L.Routing.control({createMarker: function() { return null; }, waypoints:waypoints}).addTo(mymap);
     /*
     let code = "";
     let head = "L.Routing.control({createMarker: function() { return null; }, waypoints: ["
@@ -127,4 +175,7 @@ function createWayPoints(){
     }
     code = head+body+tail
     eval(code)*/
+}
+function addMarkers(){
+
 }
