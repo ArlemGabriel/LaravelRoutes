@@ -72,7 +72,7 @@ $('#submitPoint').on('click', function () {
         newpoint.push(actualLongitude);
         newpoint.push(lastIndex);
         points.push(newpoint);
-        htmlspoints.push('<tr><td style="word-wrap: break-word;min-width: 160px;max-width: 160px;white-space:normal;">'+description+'</td><th>'+actualLatitude+'</th><th>'+actualLongitude+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + lastIndex + '">Eliminar</button></td></tr>');
+        htmlspoints.push('<tr><td style="word-wrap: break-word;min-width: 250px;max-width: 250px;white-space:normal;">'+description+'</td><th>'+actualLatitude+'</th><th>'+actualLongitude+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + lastIndex + '">Eliminar</button></td></tr>');
         $('#tbody').html(htmlspoints);
         lastIndex = lastIndex+1;
         var myMarker = L.marker([actualLatitude,actualLongitude],{icon:markerIcon}).addTo(mymap)
@@ -98,7 +98,7 @@ $('#submitRoute').on('click', function () {
         var JSONobjects = [];
         var preparingJSON;
         for(var i = 0; i <= points.length -1; i++){
-            preparingJSON = '{"nombre" : "'+points[i][0].value+'" ,"lat" :'+points[i][1]+',"long" : '+points[i][2]+'}';
+            preparingJSON = '{"description" : "'+points[i][0].value+'" ,"lat" :'+points[i][1]+',"long" : '+points[i][2]+'}';
             JSONobject =JSON.parse(preparingJSON);
             JSONobjects.push(JSONobject);
         }
@@ -142,7 +142,7 @@ $('.deleteRecord').on('click', function () {
         }
     }
 
-    var stringvalue = '<tr><td style="word-wrap: break-word;min-width: 160px;max-width: 160px;white-space:normal;">'+name+'</td><th>'+lat+'</th><th>'+lng+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + id + '">Eliminar</button></td></tr>'
+    var stringvalue = '<tr><td style="word-wrap: break-word;min-width: 250px;max-width: 250px;white-space:normal;">'+name+'</td><th>'+lat+'</th><th>'+lng+'</th><td><button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + id + '">Eliminar</button></td></tr>'
     
     // Borra los elementos del html que muestran los puntos
     for(var i = htmlspoints.length - 1; i >= 0; i--) {
