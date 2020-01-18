@@ -1,10 +1,12 @@
 var myMarker
 var actualLatitude
 var actualLongitude
+var mymap
+var markerIcon;
 // Main function that creates the map and calls other functions
 function main(){
     console.log("ENTRE");
-    var mymap = L.map('mapid').setView([9.948539942335483, -444.04008294120575], 15);
+    mymap = L.map('mapid').setView([9.948539942335483, -444.04008294120575], 15);
     actualLatitude = 9.94607;
     actualLongitude = -444.0391;
     const url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -25,7 +27,14 @@ function main(){
             actualLatitude = lat[1];
             actualLongitude = lng[0];
 			myMarker.bindPopup("Posición Actual: " + lat[1] + ", " + lng[0] + ".");
-		});
+        });
+        
+    markerIcon = L.icon({
+        iconUrl: './RES/marker.png',
+        iconSize:     [30, 30], 
+        iconAnchor:   [15, 26], 
+        popupAnchor:  [-3, -50] 
+    });
 }
 
 var config = {
@@ -66,6 +75,7 @@ $('#submitPoint').on('click', function () {
                             </tr>');
         $('#tbody').html(htmlspoints);
         lastIndex = lastIndex+1;
+        L.marker([actualLatitude, actualLongitude],{icon:markerIcon}).addTo(mymap)
     }
 
     /*var values = $("#addCustomer").serializeArray();
