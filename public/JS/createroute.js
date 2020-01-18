@@ -83,7 +83,8 @@ $('#submitPoint').on('click', function () {
 // On submitRoute click , add a new route on firebase
 $('#submitRoute').on('click', function () {
     var newroute = $("#route").serializeArray();
-    var id = newroute[0].value;
+    var tempid = newroute[0].value;
+    var id = tempid.toUpperCase();
     var name = newroute[1].value;
     var htmlserror = [];
     $('#routemessages').html(htmlserror);

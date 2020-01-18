@@ -50,7 +50,8 @@ function main(){
 $('#submitSearch').on('click', function () {
     console.log("BUSCAR");
     var newsearch = $("#searchRoute").serializeArray();
-    var searchid = newsearch[0].value;
+    var tempsearchid = newsearch[0].value;
+    var searchid = tempsearchid.toUpperCase();
     var htmlserror = [];
     $('#routessearchmessages').html(htmlserror);
     if(validateEmptySearch(searchid)==true){
@@ -105,18 +106,14 @@ function putDataOnHtml(){
 }
 function drawRouteOnMap(){
     if(markers.length == 0){
-        console.log("ENTRE");
         for(var i=0;i<=retrievedpoints.length-1;i++){
             if(i!=0 && i!=retrievedpoints.length-1){
-                console.log("ENTRE MARKER NORMAL")
                 var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerIcon}).addTo(mymap)
                 markers.push(myMarker);
             }else if(i==0){
-                console.log("ENTRE MARKER START")
                 var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerStart}).addTo(mymap)
                 markers.push(myMarker);
             }else{
-                console.log("ENTRE MARKER END")
                 var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerEnd}).addTo(mymap)
                 markers.push(myMarker);
             }
@@ -129,15 +126,12 @@ function drawRouteOnMap(){
         markers = [];
         for(var i=0;i<=retrievedpoints.length-1;i++){
             if(i!=0 && i!=retrievedpoints.length-1){
-                console.log("ENTRE MARKER NORMAL")
                 var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerIcon}).addTo(mymap)
                 markers.push(myMarker);
             }else if(i==0){
-                console.log("ENTRE MARKER START")
                 var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerStart}).addTo(mymap)
                 markers.push(myMarker);
             }else{
-                console.log("ENTRE MARKER END")
                 var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerEnd}).addTo(mymap)
                 markers.push(myMarker);
             }
@@ -145,7 +139,6 @@ function drawRouteOnMap(){
     }
 }
 function createWayPoints(){
-    console.log("ENTRE WAYPOINTS")
     if(routingControl==null){
         let waypoints = [];
         for(var i=0;i<=retrievedpoints.length-1;i++){
@@ -165,16 +158,6 @@ function createWayPoints(){
         console.log(waypoints)
         routingControl = L.Routing.control({createMarker: function() { return null; }, waypoints:waypoints}).addTo(mymap);
     }
-    /*
-    let code = "";
-    let head = "L.Routing.control({createMarker: function() { return null; }, waypoints: ["
-    let body = "L.latLng("+waypointsa[0]+")"
-    let tail = "]}).addTo(mymap);"
-    for(var j = 1; j < waypointsa.length; j+=1){
-        body = body+ ",L.latLng("+waypointsa[j]+")"
-    }
-    code = head+body+tail
-    eval(code)*/
 }
 function addMarkers(){
 
