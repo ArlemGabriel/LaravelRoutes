@@ -166,10 +166,10 @@
         <h5>Puntos</h5>
             <table class="table table-responsive">
                 <tr>
-                    <th >Descripción</th>
+                    <th width="100%">Descripción</th>
                     <th >Latitud</th>
                     <th >Longitud</th>
-                    <th width="180" class="text-center">Acción</th>
+                    <th class="text-center">Acción</th>
                 </tr>
                 <tbody id="tbody">
 
