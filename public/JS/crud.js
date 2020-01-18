@@ -21,6 +21,7 @@ var database = firebase.database();
 var lastIndex = 0;
 var points = [];
 var htmlspoints = []
+var actualchildrens = []
 // Main function that creates the map and calls other functions
 function main(){
     mymap = L.map('mapid').setView([9.948539942335483, -444.04008294120575], 15);
@@ -49,11 +50,11 @@ function main(){
         iconAnchor:   [15, 26], 
         popupAnchor:  [-3, -50] 
     });
-    var ref = firebase.database().ref("routes");
+    /*var ref = firebase.database().ref("routes");
         ref.on("value",function(snapshot) {
             //console.log("CHILDRENSCOUNT"+snapshot.numChildren());
             indexroute = snapshot.numChildren();
-        });
+    });*/
 }
 
 
@@ -64,7 +65,7 @@ $('#submitPoint').on('click', function () {
     var htmlserror = [];
     $('#pointmessages').html(htmlserror);
     if(description === ""){
-        htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops!</strong>Ingrese el nombre del punto</div>');
+        htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops! </strong>Ingrese la descripción del punto</div>');
         $('#pointmessages').html(htmlserror);
     }else{
         var marker = []
@@ -84,11 +85,12 @@ $('#submitPoint').on('click', function () {
 });
 $('#submitRoute').on('click', function () {
     var newroute = $("#route").serializeArray();
-    var name = newroute[0].value;
+    var id = newroute[0].value;
+    var name = newroute[1].value;
     var htmlserror = [];
     $('#routemessages').html(htmlserror);
-    if(name === ""){
-        htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops! </strong>Ingrese el nombre de la ruta</div>');
+    if(name === "" || id === ""){
+        htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops! </strong>Ingrese el id/nombre de la ruta</div>');
         $('#routemessages').html(htmlserror);
     }else if(points.length==0 || points.length==1){
         htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops! </strong>Ingrese al menos dos puntos </div>');
@@ -102,20 +104,31 @@ $('#submitRoute').on('click', function () {
             JSONobject =JSON.parse(preparingJSON);
             JSONobjects.push(JSONobject);
         }
-        firebase.database().ref('routes/' + indexroute).set({
+        
+        /*firebase.database().ref('routes/' + indexroute).set({
             name: name,
             points: JSONobjects,
-        });
-        
-        points = [];
-        htmlspoints = [];
-        for(var i=0; i<=markers.length-1;i++){
-            mymap.removeLayer(markers[i][0]);
-        }
-        markers = [];
-        document.getElementById("routeName").value = "";
-        document.getElementById("pointDescription").value = "";
-        $('#tbody').html(htmlspoints);
+        });*/
+        firebase.database().ref('routes/').child(id).once('value', function(snapshot) {
+            if (snapshot.exists()) {
+                htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops! </strong>Ya existe una ruta con ese identificador </div>');
+                $('#routemessages').html(htmlserror);
+            }else{
+                firebase.database().ref('routes/' + id).set({
+                    name: name,
+                    points: JSONobjects,
+                });
+                points = [];
+                htmlspoints = [];
+                for(var i=0; i<=markers.length-1;i++){
+                    mymap.removeLayer(markers[i][0]);
+                }
+                markers = [];
+                document.getElementById("routeName").value = "";
+                document.getElementById("pointDescription").value = "";
+                $('#tbody').html(htmlspoints);
+            }
+          });
         
     }
 });

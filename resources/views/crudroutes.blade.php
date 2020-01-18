@@ -37,13 +37,7 @@
                 <a class="nav-link" href="crudroutes">Crear Ruta</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Editar Ruta</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="#">Buscar Rutas</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Eliminar Rutas</a>
             </li>
             </ul>
         </div>
