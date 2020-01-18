@@ -1,6 +1,8 @@
 var retrievedpoints = [];
 var retrievedname;
 var flag;
+var mymap;
+var markers =[];
 var config = {
     apiKey: "AIzaSyAgZD9elZclhel1u5wxdU-hd_oZIL4lmG0",
     authDomain: "laravelroutes.firebaseapp.com",
@@ -12,6 +14,7 @@ var config = {
     measurementId: "G-61TQH457C2"
 
 };
+var markerIcon;
 
 firebase.initializeApp(config);
 
@@ -21,6 +24,12 @@ function main(){
     const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
     const maxzoom = 35;
     L.tileLayer(url,{attribution,maxzoom}).addTo(mymap);
+    markerIcon = L.icon({
+        iconUrl: './RES/marker.png',
+        iconSize:     [30, 30], 
+        iconAnchor:   [15, 26], 
+        popupAnchor:  [-3, -50] 
+    });
 }
 
 $('#submitSearch').on('click', function () {
@@ -46,6 +55,8 @@ $('#submitSearch').on('click', function () {
         }).then(function(){
             if(flag ==true){
                 putDataOnHtml();
+                drawRouteOnMap();
+
             }else{
                 htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops! </strong>No existe la ruta ingresada</div>');
                 $('#routessearchmessages').html(htmlserror);
@@ -54,22 +65,6 @@ $('#submitSearch').on('click', function () {
         
 
     }
-
-    /*var values = $("#addCustomer").serializeArray();
-    var name = values[0].value;
-    var email = values[1].value;
-    var userID = lastIndex + 1;
-
-    console.log(values);
-
-    firebase.database().ref('customers/' + userID).set({
-        name: name,
-        email: email,
-    });
-
-    // Reassign lastID value
-    lastIndex = userID;
-    $("#addCustomer input").val("");*/
 });
 function validateEmptySearch(searchid){
     if(searchid==""){
@@ -92,4 +87,23 @@ function putDataOnHtml(){
     }
     $('#tbody2').html(htmls);
         
+}
+function drawRouteOnMap(){
+    if(markers.length == 0){
+        console.log("ENTRE");
+        for(var i=0;i<=retrievedpoints.length-1;i++){
+            var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerIcon}).addTo(mymap)
+            markers.push(myMarker);
+        }
+        //console.log(markers)
+    }else{
+        for(var i=0; i<=markers.length-1;i++){
+            mymap.removeLayer(markers[i]);
+        }
+        markers = [];
+        for(var i=0;i<=retrievedpoints.length-1;i++){
+            markers.push(L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerIcon}).addTo(mymap));
+        }
+    }
+    
 }
