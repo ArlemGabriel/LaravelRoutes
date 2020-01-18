@@ -48,7 +48,6 @@ function main(){
 }
 
 $('#submitSearch').on('click', function () {
-    console.log("BUSCAR");
     var newsearch = $("#searchRoute").serializeArray();
     var tempsearchid = newsearch[0].value;
     var searchid = tempsearchid.toUpperCase();
@@ -90,7 +89,6 @@ function validateEmptySearch(searchid){
     }
 }
 function putDataOnHtml(){
-    console.log(retrievedpoints);
     var htmls = [];
 
     for(var i=0;i<=retrievedpoints.length-1;i++){
@@ -106,59 +104,47 @@ function putDataOnHtml(){
 }
 function drawRouteOnMap(){
     if(markers.length == 0){
-        for(var i=0;i<=retrievedpoints.length-1;i++){
-            if(i!=0 && i!=retrievedpoints.length-1){
-                var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerIcon}).addTo(mymap)
-                markers.push(myMarker);
-            }else if(i==0){
-                var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerStart}).addTo(mymap)
-                markers.push(myMarker);
-            }else{
-                var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerEnd}).addTo(mymap)
-                markers.push(myMarker);
-            }
-        }
-        //console.log(markers)
+        addMarkers();
     }else{
-        for(var i=0; i<=markers.length-1;i++){
-            mymap.removeLayer(markers[i]);
-        }
-        markers = [];
-        for(var i=0;i<=retrievedpoints.length-1;i++){
-            if(i!=0 && i!=retrievedpoints.length-1){
-                var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerIcon}).addTo(mymap)
-                markers.push(myMarker);
-            }else if(i==0){
-                var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerStart}).addTo(mymap)
-                markers.push(myMarker);
-            }else{
-                var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerEnd}).addTo(mymap)
-                markers.push(myMarker);
-            }
-        }
+        removeOldMarkers();
+        addMarkers();
     }
 }
 function createWayPoints(){
     if(routingControl==null){
-        let waypoints = [];
-        for(var i=0;i<=retrievedpoints.length-1;i++){
-            var wpnt = L.latLng(retrievedpoints[i].lat,retrievedpoints[i].long);
-            waypoints.push(wpnt);
-        }
-        console.log(waypoints)
-        routingControl = L.Routing.control({createMarker: function() { return null; }, waypoints:waypoints}).addTo(mymap);
+        createRouting();
     }else{
         mymap.removeControl(routingControl);
         routingControl=null;
-        let waypoints = [];
+        createRouting();
+    }
+}
+function addMarkers(){
+    markers = [];
+    for(var i=0;i<=retrievedpoints.length-1;i++){
+        if(i!=0 && i!=retrievedpoints.length-1){
+            var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerIcon}).addTo(mymap)
+            markers.push(myMarker);
+        }else if(i==0){
+            var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerStart}).addTo(mymap)
+            markers.push(myMarker);
+        }else{
+            var myMarker = L.marker([retrievedpoints[i].lat,retrievedpoints[i].long],{icon:markerEnd}).addTo(mymap)
+            markers.push(myMarker);
+        }
+    }
+}
+
+function removeOldMarkers(){
+    for(var i=0; i<=markers.length-1;i++){
+        mymap.removeLayer(markers[i]);
+    }
+}
+function createRouting(){
+    let waypoints = [];
         for(var i=0;i<=retrievedpoints.length-1;i++){
             var wpnt = L.latLng(retrievedpoints[i].lat,retrievedpoints[i].long);
             waypoints.push(wpnt);
         }
-        console.log(waypoints)
         routingControl = L.Routing.control({createMarker: function() { return null; }, waypoints:waypoints}).addTo(mymap);
-    }
-}
-function addMarkers(){
-
 }
