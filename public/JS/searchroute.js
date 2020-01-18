@@ -20,7 +20,7 @@ var markerEnd;
 var routingControl = null;
 
 firebase.initializeApp(config);
-
+// Function that creates the map and icons for markers
 function main(){
     mymap = L.map('mapid2').setView([9.948539942335483, -444.04008294120575], 15);
     const url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
@@ -46,7 +46,7 @@ function main(){
         popupAnchor:  [-3, -50] 
     });
 }
-
+// submitSeearch onClick that sends a request to firebase and search the route
 $('#submitSearch').on('click', function () {
     var newsearch = $("#searchRoute").serializeArray();
     var tempsearchid = newsearch[0].value;
@@ -81,6 +81,7 @@ $('#submitSearch').on('click', function () {
 
     }
 });
+// Function that validates the textfield of search is not empty
 function validateEmptySearch(searchid){
     if(searchid==""){
         return true;
@@ -88,6 +89,7 @@ function validateEmptySearch(searchid){
         return false;
     }
 }
+// Function that puts htmls of retrieved data to display it
 function putDataOnHtml(){
     var htmls = [];
 
@@ -102,6 +104,7 @@ function putDataOnHtml(){
     $('#tbody2').html(htmls);
         
 }
+// Function that draws the route on the map
 function drawRouteOnMap(){
     if(markers.length == 0){
         addMarkers();
@@ -110,6 +113,7 @@ function drawRouteOnMap(){
         addMarkers();
     }
 }
+// Function that draws the route
 function createWayPoints(){
     if(routingControl==null){
         createRouting();
@@ -119,6 +123,7 @@ function createWayPoints(){
         createRouting();
     }
 }
+// Function that add the markers on the map
 function addMarkers(){
     markers = [];
     for(var i=0;i<=retrievedpoints.length-1;i++){
