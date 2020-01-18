@@ -12,29 +12,45 @@ var config = {
 firebase.initializeApp(config);
 function main(){
     mymap = L.map('mapid2').setView([9.948539942335483, -444.04008294120575], 15);
-    actualLatitude = 9.94607;
-    actualLongitude = -444.0391;
     const url = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     const attribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
     const maxzoom = 35;
     L.tileLayer(url,{attribution,maxzoom}).addTo(mymap);
-    myMarker = L.marker([9.94607, -444.0391], {title: "MyPoint", alt: "The Big I", draggable: true})
-		.addTo(mymap)
-		.on('dragend', function() {
-            var coord = String(myMarker.getLatLng()).split(',');
-            var lat = coord[0].split('(');
-            var lng = coord[1].split(')');
-            document.getElementById("pointLon").value = ""+lng[0]+""; 
-            document.getElementById("pointLat").value = ""+lat[1]+"";
-            actualLatitude = lat[1];
-            actualLongitude = lng[0];
-			myMarker.bindPopup("Posición Actual: " + lat[1] + ", " + lng[0] + ".");
-        });
-        
-    markerIcon = L.icon({
-        iconUrl: './RES/marker.png',
-        iconSize:     [30, 30], 
-        iconAnchor:   [15, 26], 
-        popupAnchor:  [-3, -50] 
+}
+
+$('#submitSearch').on('click', function () {
+    console.log("BUSCAR");
+    var newsearch = $("#searchRoute").serializeArray();
+    var searchid = newsearch[0].value;
+    var htmlserror = [];
+    $('#routessearchmessages').html(htmlserror);
+    if(validateEmptySearch(searchid)==true){
+        htmlserror.push('<div class="alert alert-danger fade show" role="alert" id="authalert"><strong>Ooops! </strong>Ingrese un identificador</div>');
+        $('#routessearchmessages').html(htmlserror);
+    }else{
+        console.log("LLENO")
+    }
+
+    /*var values = $("#addCustomer").serializeArray();
+    var name = values[0].value;
+    var email = values[1].value;
+    var userID = lastIndex + 1;
+
+    console.log(values);
+
+    firebase.database().ref('customers/' + userID).set({
+        name: name,
+        email: email,
     });
+
+    // Reassign lastID value
+    lastIndex = userID;
+    $("#addCustomer input").val("");*/
+});
+function validateEmptySearch(searchid){
+    if(searchid==""){
+        return true;
+    }else{
+        return false;
+    }
 }

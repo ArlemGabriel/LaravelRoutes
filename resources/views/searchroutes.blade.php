@@ -48,9 +48,13 @@
         <div class="row">
             <div class="col">
                 <form class="form-inline">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Ingrese el ID de la ruta ..." aria-label="Buscar">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+                    <input class="form-control mr-sm-2" type="text" placeholder="Ingrese el ID de la ruta ..." aria-label="Buscar" name="searchRoute" id="searchRoute">
+                    <button id="submitSearch" class="btn btn-primary my-2 my-sm-0" type="button">Buscar</button>
+                    <div id="routessearchmessages" class= "mt-2 ml-3">
+
+                </div>
                 </form>
+                
             </div>
         </div>
         <div class= "row">
